@@ -39,20 +39,7 @@ console.log(result2);
 */
 ```
 
-### **Verbose Mode**  
 
-```javascript
-const resultVerbose = deepCompare(obj3, obj4, { verbose: true });
-console.log(resultVerbose);
-/* Output:
-{
-  equal: false,
-  differences: [
-    { path: '["b"]["d"][1]', value1: 4, value2: 5, message: 'Values differ: 4 vs 5' }
-  ]
-}
-*/
-```
 ### **Verbose Mode(Structured Path)**  
 
 ```javascript
