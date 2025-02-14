@@ -5,7 +5,7 @@ A robust utility for deeply comparing objects and providing detailed difference 
 ## Installation  
 
 ```bash
-npm install deep-object-compare
+npm install nested-object-compare
 ```
 
 ## Usage  
@@ -13,7 +13,7 @@ npm install deep-object-compare
 ### **Basic Comparison**  
 
 ```javascript
-const deepCompare = require('deep-object-compare');
+const deepCompare = require('nested-object-compare');
 
 const obj1 = { a: 1, b: { c: 2 } };
 const obj2 = { a: 1, b: { c: 2 } };
@@ -34,9 +34,7 @@ console.log(result2);
 /* Output:
 {
   equal: false,
-  differences: [
-    { path: '["b"]["d"][1]', value1: 4, value2: 5, message: 'Values differ: 4 vs 5' }
-  ]
+  differences: []
 }
 */
 ```
@@ -55,6 +53,35 @@ console.log(resultVerbose);
 }
 */
 ```
+### **Verbose Mode(Structured Path)**  
+
+```javascript
+const resultVerbose = deepCompare(obj3, obj4, { verbose: true });
+console.log(resultVerbose);
+/* Output:
+{
+  equal: false,
+  differences: [
+    { path: '["b"]["d"][1]', value1: 4, value2: 5, message: 'Values differ: 4 vs 5' }
+  ]
+}
+*/
+```
+
+### **Verbose Mode(Dot Notation Path)**  
+
+```javascript
+const resultVerbose = deepCompare(obj3, obj4, { verbose: true,pathFormat: "dot" });
+console.log(resultVerbose);
+/* Output:
+{
+  equal: false,
+  differences: [
+    { path: "b.d.1", value1: 4, value2: 5, message: 'Values differ: 4 vs 5' }
+  ]
+}
+*/
+```
 
 ### **Strict vs. Loose Comparison**  
 
@@ -66,13 +93,18 @@ const result3 = deepCompare(obj5, obj6); // Strict (default)
 console.log(result3);
 /* Output:
 {
-  equal: false
+  equal: false,
+  differences: []
 }
 */
 
 const result4 = deepCompare(obj5, obj6, { strict: false }); // Loose
 console.log(result4);
-// Output: { equal: true }
+/* Output:
+ { equal: true,
+// differences: []
+}
+*/
 ```
 
 ### **Handling Circular References**  
@@ -86,7 +118,11 @@ circular2.itself = circular2;
 
 const resultCircular = deepCompare(circular1, circular2);
 console.log(resultCircular);
-// Output: { equal: true }
+/* Output:
+ { equal: true,
+// differences: []
+}
+*/
 ```
 
 ```javascript

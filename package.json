@@ -1,13 +1,15 @@
 {
-  "name": "nested-object-compare",  
-  "version": "1.0.1",
-  "description": "A robust utility for deeply comparing objects and providing detailed difference information. Handles nested objects, arrays, and circular references. See README for full API and examples.", 
-  "main": "index.js",
-  "type":"module",
+  "name": "nested-object-compare",
+  "version": "1.0.5",
+  "description": "A robust utility for deeply comparing objects and providing detailed difference information. Handles nested objects, arrays, and circular references. See README for full API and examples.",
+  "main": "dist/index.js",
+  "type": "module",
+  "types": "dist/index.d.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "npx jest",
+    "build": "tsc"
   },
-  "keywords": [ 
+  "keywords": [
     "js",
     "ts",
     "typescript",
@@ -23,17 +25,26 @@
     "objectarray",
     "deepcompare",
     "object compare",
-   " object deep compare",
-   " object deep comparison"
+    "object deep compare",
+    "object deep comparison"
   ],
-  "author": "shaiyzkhan", 
-  "license": "MIT", 
-  "repository": { 
+  "author": "shaiyzkhan",
+  "license": "MIT",
+  "repository": {
     "type": "git",
-    "url": "https://github.com/shaiyz/deep-compare.git" 
+    "url": "https://github.com/shaiyz/deep-compare.git"
   },
-  "bugs": { 
-    "url": "https://github.com/shaiyz/deep-compare/issues" 
+  "bugs": {
+    "url": "https://github.com/shaiyz/deep-compare/issues"
   },
-  "homepage": "https://github.com/shaiyz/deep-compare#readme"
+  "files": [
+    "dist/",
+    "README.md"
+],
+  "homepage": "https://github.com/shaiyz/deep-compare#readme",
+  "devDependencies": {
+    "@types/jest": "^29.5.14",
+    "jest": "^29.7.0",
+    "ts-jest": "^29.2.5"
+  }
 }
