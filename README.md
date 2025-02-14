@@ -2,7 +2,7 @@
 
 A robust utility for deeply comparing objects and providing detailed difference information.  Handles nested objects, arrays, and circular references.
 
- [![Build Status](https://github.com/shaiyz/deep-object-compare/actions/workflows/nodejs.yml/badge.svg?branch=main)](https://github.com/shaiyz/deep-object-compare/actions/workflows/nodejs.yml) ## Installation
+ ## Installation
 
 ```bash
 npm install deep-object-compare
