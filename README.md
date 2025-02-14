@@ -1,6 +1,6 @@
 # deep-object-compare  
 
-A robust utility for deeply comparing objects and providing detailed difference information. Handles nested objects, arrays, and circular references.  
+A robust utility for deeply comparing objects and providing detailed difference information. Handles nested objects, arrays, and circular references.
 
 ## Installation  
 
@@ -20,7 +20,7 @@ const obj2 = { a: 1, b: { c: 2 } };
 
 const result = deepCompare(obj1, obj2);
 console.log(result);
-// Output: { equal: true, differences: [] }
+// Output: { equal: true }
 ```
 
 ### **Detecting Differences**  
@@ -35,7 +35,7 @@ console.log(result2);
 {
   equal: false,
   differences: [
-    { path: 'b.d.1', value1: 4, value2: 5, message: 'Values differ: 4 vs 5' }
+    { path: '["b"]["d"][1]', value1: 4, value2: 5, message: 'Values differ: 4 vs 5' }
   ]
 }
 */
@@ -50,7 +50,7 @@ console.log(resultVerbose);
 {
   equal: false,
   differences: [
-    { path: 'b.d.1', value1: 4, value2: 5, message: 'Values differ: 4 vs 5' }
+    { path: '["b"]["d"][1]', value1: 4, value2: 5, message: 'Values differ: 4 vs 5' }
   ]
 }
 */
@@ -66,16 +66,13 @@ const result3 = deepCompare(obj5, obj6); // Strict (default)
 console.log(result3);
 /* Output:
 {
-  equal: false,
-  differences: [
-    { path: 'b.c', value1: 2, value2: '2', message: 'Types differ: number vs string' }
-  ]
+  equal: false
 }
 */
 
 const result4 = deepCompare(obj5, obj6, { strict: false }); // Loose
 console.log(result4);
-// Output: { equal: true, differences: [] }
+// Output: { equal: true }
 ```
 
 ### **Handling Circular References**  
@@ -89,7 +86,7 @@ circular2.itself = circular2;
 
 const resultCircular = deepCompare(circular1, circular2);
 console.log(resultCircular);
-// Output: { equal: true, differences: [] }  (Handles circularity!)
+// Output: { equal: true }
 ```
 
 ```javascript
@@ -100,13 +97,13 @@ const circular4 = {};
 circular4.a = circular4;
 circular4.b = 1;
 
-const resultCircular2 = deepCompare(circular3, circular4);
+const resultCircular2 = deepCompare(circular3, circular4, { verbose: true });
 console.log(resultCircular2);
 /* Output:
 {
   equal: false,
   differences: [
-    { path: 'b', value1: undefined, value2: 1, message: 'Value exists in one object only' }
+    { path: '["b"]', value1: undefined, value2: 1, message: 'Value exists in one object only' }
   ]
 }
 */

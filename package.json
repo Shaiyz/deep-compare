@@ -1,11 +1,39 @@
 {
-  "name": "deep-compare",
-  "version": "1.0.0",
+  "name": "nested-object-compare",  
+  "version": "1.0.1",
+  "description": "A robust utility for deeply comparing objects and providing detailed difference information. Handles nested objects, arrays, and circular references. See README for full API and examples.", 
   "main": "index.js",
+  "type":"module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
-  "license": "ISC",
-  "description": "Deeply compare objects. Example: deepCompare({a:1}, {a:2}) returns {equal: false, ...}. See README for full API and examples."
- }
+  "keywords": [ 
+    "js",
+    "ts",
+    "typescript",
+    "javascript",
+    "deep compare",
+    "object comparison",
+    "diff",
+    "equality",
+    "utility",
+    "nested objects",
+    "arrays",
+    "circular references",
+    "objectarray",
+    "deepcompare",
+    "object compare",
+   " object deep compare",
+   " object deep comparison"
+  ],
+  "author": "shaiyzkhan", 
+  "license": "MIT", 
+  "repository": { 
+    "type": "git",
+    "url": "https://github.com/shaiyz/deep-compare.git" 
+  },
+  "bugs": { 
+    "url": "https://github.com/shaiyz/deep-compare/issues" 
+  },
+  "homepage": "https://github.com/shaiyz/deep-compare#readme"
+}
