@@ -7,5 +7,5 @@
   },
   "author": "",
   "license": "ISC",
-  "description": ""
-}
+  "description": "Deeply compare objects. Example: deepCompare({a:1}, {a:2}) returns {equal: false, ...}. See README for full API and examples."
+ }
