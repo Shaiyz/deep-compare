@@ -1,15 +1,3 @@
-It's not formatted correctly because:  
-
-1. The **installation section** includes code that should be in a **separate usage example** section.  
-2. The **code block starts too early** (right after `npm install`), making it look like the installation command includes the entire example.  
-3. There's **no clear separation between sections** (e.g., headings for installation, usage, and different scenarios).  
-4. The **last comment** ("is it good no") seems out of place.  
-
----
-
-### **Here’s a properly formatted version:**  
-
-```markdown
 # deep-object-compare  
 
 A robust utility for deeply comparing objects and providing detailed difference information. Handles nested objects, arrays, and circular references.  
@@ -31,7 +19,7 @@ const obj1 = { a: 1, b: { c: 2 } };
 const obj2 = { a: 1, b: { c: 2 } };
 
 const result = deepCompare(obj1, obj2);
-console.log(result); 
+console.log(result);
 // Output: { equal: true, differences: [] }
 ```
 
@@ -72,4 +60,55 @@ console.log(resultVerbose);
 
 ```javascript
 const obj5 = { a: 1, b: { c: 2 } };
-const obj6 = { a: 1, b: {
+const obj6 = { a: 1, b: { c: '2' } }; // '2' is a string
+
+const result3 = deepCompare(obj5, obj6); // Strict (default)
+console.log(result3);
+/* Output:
+{
+  equal: false,
+  differences: [
+    { path: 'b.c', value1: 2, value2: '2', message: 'Types differ: number vs string' }
+  ]
+}
+*/
+
+const result4 = deepCompare(obj5, obj6, { strict: false }); // Loose
+console.log(result4);
+// Output: { equal: true, differences: [] }
+```
+
+### **Handling Circular References**  
+
+```javascript
+const circular1 = {};
+circular1.itself = circular1;
+
+const circular2 = {};
+circular2.itself = circular2;
+
+const resultCircular = deepCompare(circular1, circular2);
+console.log(resultCircular);
+// Output: { equal: true, differences: [] }  (Handles circularity!)
+```
+
+```javascript
+const circular3 = {};
+circular3.a = circular3;
+
+const circular4 = {};
+circular4.a = circular4;
+circular4.b = 1;
+
+const resultCircular2 = deepCompare(circular3, circular4);
+console.log(resultCircular2);
+/* Output:
+{
+  equal: false,
+  differences: [
+    { path: 'b', value1: undefined, value2: 1, message: 'Value exists in one object only' }
+  ]
+}
+*/
+```
+
