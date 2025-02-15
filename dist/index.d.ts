@@ -23,4 +23,4 @@ export interface CompareOptions {
  * @returns An object containing the comparison result and differences (if verbose).
  */
 declare function deepCompare(obj1: unknown, obj2: unknown, options?: CompareOptions): ComparisonResult;
-export default deepCompare;
+export { deepCompare };

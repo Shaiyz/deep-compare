@@ -92,4 +92,6 @@ function deepCompare(obj1: unknown, obj2: unknown, options: CompareOptions = {})
   return result;
 }
 
-export default deepCompare;
+export {
+  deepCompare
+} 

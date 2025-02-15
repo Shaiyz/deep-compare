@@ -1,11 +1,16 @@
 {
-    "compilerOptions": {
-      "outDir": "dist",  
-      "rootDir": "src",  
-      "declaration": true,  
-      "module": "CommonJS",  
-      "target": "ES6"  
-    },
-    "include": ["src"],
-    "exclude": ["node_modules", "tests"]
+  "compilerOptions": {
+    "target": "es2020", // Or esnext
+    "module": "esnext", // Important!
+    "moduleResolution": "node", // Recommended
+    "outDir": "dist",
+    "esModuleInterop": true, // Recommended for compatibility
+    "strict": true, // Recommended for type safety
+    "declaration": true, // Generate .d.ts files
+    "lib": ["es2020", "dom"], // Add necessary libraries
+    "skipLibCheck": true, // Skip type checking of declaration files.
+    "forceConsistentCasingInFileNames": true // Avoid case mismatch issues.
+  },
+  "include": ["src/**/*.ts"], // Your TypeScript source files
+  "exclude": ["node_modules"]
 }

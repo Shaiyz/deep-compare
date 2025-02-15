@@ -1,4 +1,4 @@
-import deepCompare, { ComparisonResult } from "../src/index"; 
+import  { deepCompare,ComparisonResult } from "../src/index"; 
 
 describe("deepCompare", () => {
   test("should return equal for identical objects", () => {

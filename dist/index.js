@@ -1,5 +1,3 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
 /**
  * A utility function for efficiently comparing objects, including nested objects and arrays.
  * Provides detailed information about differences.
@@ -64,4 +62,4 @@ function deepCompare(obj1, obj2, options = {}) {
     compareValues(obj1, obj2);
     return result;
 }
-exports.default = deepCompare;
+export { deepCompare };

@@ -13,7 +13,7 @@ npm install nested-object-compare
 ### **Basic Comparison**  
 
 ```javascript
-const deepCompare = require('nested-object-compare');
+const { deepCompare } = require('nested-object-compare');
 
 const obj1 = { a: 1, b: { c: 2 } };
 const obj2 = { a: 1, b: { c: 2 } };
