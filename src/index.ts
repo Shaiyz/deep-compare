@@ -1,20 +1,18 @@
-export interface Difference {
-  path: string;
-  value1: unknown;
-  value2: unknown;
-  message: string;
-}
-
-export interface ComparisonResult {
+type CompareResult = {
   equal: boolean;
-  differences: Difference[];
-}
+  differences: Array<{
+    path: string;
+    value1: any;
+    value2: any;
+    message: string;
+  }>;
+};
 
-export interface CompareOptions {
-  strict?: boolean;
+type CompareOptions = {
   verbose?: boolean;
-  pathFormat?: "dot" | "structured";
-}
+  strict?: boolean;
+  pathFormat?: "bracket" | "dot";
+};
 
 /**
  * A utility function for efficiently comparing objects, including nested objects and arrays.
@@ -25,73 +23,84 @@ export interface CompareOptions {
  * @param options Optional settings.
  * @returns An object containing the comparison result and differences (if verbose).
  */
-function deepCompare(obj1: unknown, obj2: unknown, options: CompareOptions = {}): ComparisonResult {
-  const { strict = true, verbose = true, pathFormat = "structured" } = options;
 
-  const result: ComparisonResult = { equal: true, differences: [] };
+export function deepCompare(obj1: any, obj2: any, options: CompareOptions = {}): CompareResult {
+  const { verbose = false, strict = true, pathFormat = "bracket" } = options;
+  const differences: CompareResult["differences"] = [];
+  const visited = new WeakMap();  
 
-  function formatPath(path: (string | number)[]): string {
-    return pathFormat === "dot"
-      ? path.join(".")
-      : path
-          .map(key => (typeof key === "number" ? `[${key}]` : `["${key}"]`))
-          .join("");
-  }
-
-  function addDifference(path: (string | number)[], value1: unknown, value2: unknown, message: string) {
-    result.equal = false;
-    if (verbose) {
-      result.differences.push({
-        path: formatPath(path),
-        value1,
-        value2,
-        message,
-      });
+  const formatPath = (key: string, format: "bracket" | "dot", isFirstKey: boolean = false): string => {
+    if (format === "dot") {
+      return isFirstKey ? `${key}` : `.${key}`;
     }
-  }
+    if (/^\d+$/.test(key)) {
+      return `[${key}]`;
+    }
+    return `["${key}"]`;
+  };
 
-  function compareValues(val1: any, val2: any, path: (string | number)[] = []): void {
-
-    if (val1 === val2 || (!strict && val1 == val2)) return;
-
-    if (typeof val1 !== typeof val2) {
-      addDifference(path, val1, val2, `Types differ: ${typeof val1} vs ${typeof val2}`);
-      return;
+  const compare = (val1: any, val2: any, path: string, isFirstKey: boolean = false): boolean => {
+     if (!strict && val1 == val2) {
+      return true;
     }
 
-    if (val1 && typeof val1 === "object" && val2 && typeof val2 === "object") {
-      const isArray1 = Array.isArray(val1);
-      const isArray2 = Array.isArray(val2);
+     if (strict && typeof val1 !== typeof val2) {
+      differences.push({ path, value1: val1, value2: val2, message: `Types differ: ${typeof val1} vs ${typeof val2}` });
+      return false;
+    }
 
-      if (isArray1 !== isArray2) {
-        addDifference(path, val1, val2, "One is an array, the other is an object");
-        return;
+     if (val1 === val2) return true;
+
+    if (typeof val1 === "object" && val1 !== null && typeof val2 === "object" && val2 !== null) {
+      if (visited.has(val1)) {
+        return visited.get(val1) === val2; 
       }
 
-      const keys1 = isArray1 ? val1.map((_, i) => i) : Object.keys(val1);
-      const keys2 = isArray2 ? val2.map((_, i) => i) : Object.keys(val2);
-      const allKeys = new Set([...keys1, ...keys2]);
+       visited.set(val1, val2);
 
-      for (const key of allKeys) {
-        const hasKey1 = key in val1;
-        const hasKey2 = key in val2;
+      const keys1 = Object.keys(val1);
+      const keys2 = Object.keys(val2);
 
-        if (!hasKey1 || !hasKey2) {
-          addDifference([...path, key], hasKey1 ? val1[key] : "(missing)", hasKey2 ? val2[key] : "(missing)", `Key "${key}" is missing in one of the objects`);
-        } else {
-          compareValues(val1[key], val2[key], [...path, key]);
+     for (const key of keys1) {
+        if (!keys2.includes(key)) {
+          differences.push({
+            path: `${path}${formatPath(key, pathFormat, isFirstKey)}`,
+            value1: val1[key],
+            value2: "(missing)",
+            message: `Key "${key}" is missing in one of the objects`,
+          });
+          return false;
         }
       }
-      return;
+
+      for (const key of keys2) {
+        if (!keys1.includes(key)) {
+          differences.push({
+            path: `${path}${formatPath(key, pathFormat, isFirstKey)}`,
+            value1: "(missing)",
+            value2: val2[key],
+            message: `Key "${key}" is missing in one of the objects`,
+          });
+          return false;
+        }
+      }
+
+      let isEqual = true;
+      for (const key of keys1) {
+        const newPath = `${path}${formatPath(key, pathFormat, isFirstKey)}`;
+        if (!compare(val1[key], val2[key], newPath, false)) {
+          isEqual = false;
+        }
+      }
+      return isEqual;
     }
 
-    addDifference(path, val1, val2, `Values differ: ${JSON.stringify(val1)} vs ${JSON.stringify(val2)}`);
-  }
+    differences.push({ path, value1: val1, value2: val2, message: `Values differ: ${val1} vs ${val2}` });
+    return false;
+  };
 
-  compareValues(obj1, obj2);
-  return result;
+  const equal = compare(obj1, obj2, "", true);
+  return { equal, differences: verbose ? differences : [] };
 }
 
-export {
-  deepCompare
-} 
+export type { CompareOptions, CompareResult };

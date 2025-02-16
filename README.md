@@ -1,3 +1,5 @@
+**Important:** Version 1.1.3 fixes a critical issue with importing. Please upgrade to the latest version to avoid potential errors.
+
 # deep-object-compare  
 
 A robust utility for deeply comparing objects and providing detailed difference information. Handles nested objects, arrays, and circular references.
@@ -94,41 +96,5 @@ console.log(result4);
 */
 ```
 
-### **Handling Circular References**  
 
-```javascript
-const circular1 = {};
-circular1.itself = circular1;
-
-const circular2 = {};
-circular2.itself = circular2;
-
-const resultCircular = deepCompare(circular1, circular2);
-console.log(resultCircular);
-/* Output:
- { equal: true,
-// differences: []
-}
-*/
-```
-
-```javascript
-const circular3 = {};
-circular3.a = circular3;
-
-const circular4 = {};
-circular4.a = circular4;
-circular4.b = 1;
-
-const resultCircular2 = deepCompare(circular3, circular4, { verbose: true });
-console.log(resultCircular2);
-/* Output:
-{
-  equal: false,
-  differences: [
-    { path: '["b"]', value1: undefined, value2: 1, message: 'Value exists in one object only' }
-  ]
-}
-*/
-```
 

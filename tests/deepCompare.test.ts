@@ -1,11 +1,11 @@
-import  { deepCompare,ComparisonResult } from "../src/index"; 
+import  { deepCompare,CompareResult } from "../src/index"; 
 
 describe("deepCompare", () => {
   test("should return equal for identical objects", () => {
     const obj1 = { a: 1, b: { c: 2, d: [3, 4] } };
     const obj2 = { a: 1, b: { c: 2, d: [3, 4] } };
 
-    const result: ComparisonResult = deepCompare(obj1, obj2);
+    const result: CompareResult = deepCompare(obj1, obj2);
     expect(result.equal).toBe(true);
     expect(result.differences).toHaveLength(0);
   });
@@ -100,4 +100,31 @@ describe("deepCompare", () => {
     expect(resultLoose.equal).toBe(true);
     
   });
+});
+
+test("Handles circular references correctly", () => {
+  const obj1: any = { a: 1 };
+  obj1.self = obj1; // Circular reference
+
+  const obj2: any = { a: 1, self: {} };
+  obj2.self = obj2; // Circular reference
+
+  const result = deepCompare(obj1, obj2);
+
+  expect(result.equal).toBe(false);
+  expect(result.differences).toEqual(
+    expect.arrayContaining([
+      expect.objectContaining({ message: "Circular reference mismatch detected" }),
+    ])
+  );
+});
+
+test("Ignores circular references in identical objects", () => {
+  const obj1: any = { a: 1 };
+  obj1.self = obj1;
+
+  const obj2: any = { a: 1 };
+  obj2.self = obj2;
+
+  expect(deepCompare(obj1, obj2)).toEqual({ equal: true, differences: [] });
 });
