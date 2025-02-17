@@ -1,8 +1,8 @@
-**Important:** Version 1.1.3 fixes a critical issue with importing. Please upgrade to the latest version to avoid potential errors.
+**Important:** Version 1.1.4 fixes a critical issue with importing. Please upgrade to the latest version to avoid potential errors.
 
 # deep-object-compare  
 
-A robust utility for deeply comparing objects and providing detailed difference information. Handles nested objects, arrays, and circular references.
+A robust utility for deeply comparing objects and providing detailed difference information. Handles nested objects and arrays.
 
 ## Installation  
 

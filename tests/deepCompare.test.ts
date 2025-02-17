@@ -67,7 +67,7 @@ describe("deepCompare", () => {
     });
   });
 
-  test("should support dot notation for paths", () => {
+test("should support dot notation for paths", () => {
     const obj1 = { a: { b: { c: 1 } } };
     const obj2 = { a: { b: { c: 2 } } };
 
@@ -75,7 +75,7 @@ describe("deepCompare", () => {
     expect(result.differences[0].path).toBe("a.b.c");
   });
 
-  test("should handle deeply nested differences", () => {
+test("should handle deeply nested differences", () => {
     const obj1 = { a: { b: { c: { d: { e: 5 } } } } };
     const obj2 = { a: { b: { c: { d: { e: 10 } } } } };
 
@@ -89,7 +89,7 @@ describe("deepCompare", () => {
     });
   });
 
-  test("should respect strict equality option", () => {
+test("should respect strict equality option", () => {
     const obj1 = { a: 1, b: "2" };
     const obj2 = { a: 1, b: 2 };
 
@@ -101,6 +101,43 @@ describe("deepCompare", () => {
     
   });
 });
+
+test("should handle multiple differnces for single property", () => {
+
+  const obj1={a:[{
+    "name": "Adeel Solangi",
+    "language": "Sindhi",
+    "id": "V59OF92YF627HFY0",
+    "bio": "Donec lobortis eleifend condimentum. Cras dictum dolor lacinia lectus vehicula rutrum. Maecenas quis nisi nunc. Nam tristique feugiat est vitae mollis. Maecenas quis nisi nunc.",
+    "version": 6.1
+  }]}
+  const obj2={
+    a:[{
+        "name": "Adeel Solangie",
+        "ide": "143",
+        "language": "Sindhi",
+        "id": "V59OF92YF627HFY0",
+        "bio": "Donec lobortis eleifend condimentum. Cras dictum dolor lacinia lectus vehicula rutrum. Maecenas quis nisi nunc. Nam tristique feugiat est vitae mollis. Maecenas quis nisi nunc.",
+        "version": 6.1
+    }],
+  }
+  const result = deepCompare(obj1, obj2, {  verbose: true });
+  expect(result.equal).toBe(false);
+  expect(result.differences).toContainEqual({
+      path: '["a"][0]["ide"]',
+      value1: '(missing)',
+      value2: '143',
+      message: 'Key "ide" is missing in one of the objects'
+    
+  });
+  expect(result.differences).toContainEqual({
+      path: '["a"][0]["name"]',
+      value1: 'Adeel Solangi',
+      value2: 'Adeel Solangie',
+      message: 'Values differ: Adeel Solangi vs Adeel Solangie'
+});
+});
+
 
 test("Handles circular references correctly", () => {
   const obj1: any = { a: 1 };

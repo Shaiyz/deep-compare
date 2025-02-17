@@ -1,18 +1,17 @@
-export interface Difference {
-    path: string;
-    value1: unknown;
-    value2: unknown;
-    message: string;
-}
-export interface ComparisonResult {
+type CompareResult = {
     equal: boolean;
-    differences: Difference[];
-}
-export interface CompareOptions {
-    strict?: boolean;
+    differences: Array<{
+        path: string;
+        value1: any;
+        value2: any;
+        message: string;
+    }>;
+};
+type CompareOptions = {
     verbose?: boolean;
-    pathFormat?: "dot" | "structured";
-}
+    strict?: boolean;
+    pathFormat?: "structured" | "dot";
+};
 /**
  * A utility function for efficiently comparing objects, including nested objects and arrays.
  * Provides detailed information about differences.
@@ -22,5 +21,5 @@ export interface CompareOptions {
  * @param options Optional settings.
  * @returns An object containing the comparison result and differences (if verbose).
  */
-declare function deepCompare(obj1: unknown, obj2: unknown, options?: CompareOptions): ComparisonResult;
-export { deepCompare };
+export declare function deepCompare(obj1: any, obj2: any, options?: CompareOptions): CompareResult;
+export type { CompareOptions, CompareResult };
